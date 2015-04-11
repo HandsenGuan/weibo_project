@@ -1,0 +1,3 @@
+eclipse.preferences.version=1
+validator.Checked=WebRoot/static_resource/iquery_uploadfile/control/css/zyUpload.css,WebRoot/static_resource/wysiwyg/bootstrap-wysiwyg/external/google-code-prettify/prettify.js,WebRoot/static_resource/ckeditor_source/dev/iconmaker/iconmaker.js,WebRoot/source/ckeditor.js,WebRoot/static_resource/ckeditor_source/dev/tasks/utils/tools.js,WebRoot/static_resource/wysiwyg/bootstrap-wysiwyg/external/google-code-prettify/run_prettify.js,WebRoot/static_resource/ckeditor_source/ckeditor.js,WebRoot/static_resource/wysiwyg/bootstrap-wysiwyg/jquery-2.1.3.min.js
+validator.Unchecked=
