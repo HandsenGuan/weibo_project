@@ -1,19 +1,11 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ taglib uri="http://java.sun.com/jstl/core" prefix="c"%>
 
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<base href="<%=basePath%>">
 
-<title>My JSP 'Ckedtor.jsp' starting page</title>
+<title>Ckedtor</title>
 
 <meta http-equiv="pragma" content="no-cache">
 <meta http-equiv="cache-control" content="no-cache">
@@ -48,7 +40,7 @@
 		method="post">
 		<textarea name="editor1" id="editor1" rows="10" cols="80">
                 This is my textarea to be replaced with CKEditor.
-            </textarea>
+         </textarea>
 
 		<script>
 			// Replace the <textarea id="editor1"> with a CKEditor
@@ -71,7 +63,7 @@
 								}],
 								toolbarLocation : 'bottom',
 								// Remove the redundant buttons from toolbar groups defined above.
-								removeButtons : 'NumberedList,BulletedList,CreateDiv,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,Iframe,Underline,Strike,Subscript,Superscript,Anchor,Styles',
+								removeButtons : 'CreateDiv,Image,Flash,Table,HorizontalRule,SpecialChar,PageBreak,Iframe,Underline,Strike,Subscript,Superscript,Anchor,Styles',
 								removePlugins: 'elementspath,resize'
 							});
 		</script>

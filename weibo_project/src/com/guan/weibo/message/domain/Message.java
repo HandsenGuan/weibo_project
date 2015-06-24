@@ -1,58 +1,98 @@
 package com.guan.weibo.message.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
+
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.OrderBy;
+import org.springframework.web.util.HtmlUtils;
 
 import com.guan.weibo.user.domain.User;
+import com.guan.weibo.user.domain.UserFav;
+import com.guan.weibo.utils.RichTextProcessor;
 
 @Entity(name="message")
-public class Message {
+public class Message implements Serializable{
+
+	private static final long serialVersionUID = 1L;
+
+	public Message() {
+		super();
+	}
 	
+	public Message(User user,String content,int type) {
+		this.user = user;
+		this.content = content;
+		this.type = type;
+		this.time = new Timestamp(System.currentTimeMillis());
+		this.scan_num = 0;
+		this.reply_num = 0;
+	}
+	
+	//消息表主键（uuid）
 	@Id
-	@Column(name="m_id",length=32)
+	@GeneratedValue(generator = "ud")
+	@GenericGenerator(name = "ud", strategy = "uuid")
 	private String m_id;
 	
-	@Column(name="m_title",length=50)
-	private String m_title;
-	
-	@Column(name="m_content",length=5000)
-	private String m_content;
-	
-	@Column(name="m_http",length=150)
-	private String	m_http;
-	
-	@Column(name="m_fav",length=11)
-	private Integer m_fav;
-	
-	@Column(name="m_reply",length=11)
-	private Integer m_reply;
-	
-	@Column(name="m_copy",length=11)
-	private Integer m_copy;
-	
-	@Column(name="m_datetime")
-	private Timestamp m_datetime;
-
-	@ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	//消息用户
+	@ManyToOne
+	@JoinColumn(name="u_id")
 	private User user;
 	
-	@ManyToOne(cascade={CascadeType.ALL},fetch=FetchType.LAZY)
-	@JoinColumn(name="t_id")
-	private MessageTitle messageTitle;
+	//消息标题
+	@Column(name="title",length=100)
+	private String title;
 	
-	@OneToOne(mappedBy="message")
-	private Copy copy;
+	//消息内容
+	@Column(name="content",length=5000)
+	private String content;
 	
+	//消息发布时间
+	@Column(name="time")
+	private Timestamp time;
 	
+	//消息类型
+	@Column(name="type",length=1)
+	private int type;
+	
+	//浏览次数
+	@Column(name="scan_num")
+	private int scan_num;
+	
+	//回复次数
+	@Column(name="reply_num")
+	private int reply_num;
+	
+	//用户关注消息表(关注此消息的多个用户)
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="message")
+	private Set<UserFav> faveds;
+	
+	//图片表
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="message")
+	private Set<Image> images;
+	
+	//评论表
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="message")
+	@OrderBy(clause = "time desc")
+	private Set<Reply> replys;
+	
+	//消息标签表
+	@OneToMany(fetch=FetchType.EAGER,mappedBy="message")
+	private Set<MessageLabel> labels;
+	
+
 	public String getM_id() {
 		return m_id;
 	}
@@ -60,69 +100,7 @@ public class Message {
 	public void setM_id(String m_id) {
 		this.m_id = m_id;
 	}
-	
-	
-	public String getM_title() {
-		return m_title;
-	}
 
-	public void setM_title(String m_title) {
-		this.m_title = m_title;
-	}
-	
-	
-	public String getM_content() {
-		return m_content;
-	}
-
-	public void setM_content(String m_content) {
-		this.m_content = m_content;
-	}
-
-
-	public String getM_http() {
-		return m_http;
-	}
-
-	public void setM_http(String m_http) {
-		this.m_http = m_http;
-	}
-
-	public Integer getM_fav() {
-		return m_fav;
-	}
-
-	public void setM_fav(Integer m_fav) {
-		this.m_fav = m_fav;
-	}
-
-	public Integer getM_reply() {
-		return m_reply;
-	}
-
-	public void setM_reply(Integer m_reply) {
-		this.m_reply = m_reply;
-	}
-
-	
-	public Integer getM_copy() {
-		return m_copy;
-	}
-
-	public void setM_copy(Integer m_copy) {
-		this.m_copy = m_copy;
-	}
-
-	
-	public Timestamp getM_datetime() {
-		return m_datetime;
-	}
-
-	public void setM_datetime(Timestamp m_datetime) {
-		this.m_datetime = m_datetime;
-	}
-
-	
 	public User getUser() {
 		return user;
 	}
@@ -131,27 +109,107 @@ public class Message {
 		this.user = user;
 	}
 
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public Timestamp getTime() {
+		return time;
+	}
+
+	public void setTime(Timestamp time) {
+		this.time = time;
+	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public int getScan_num() {
+		return scan_num;
+	}
+
+	public void setScan_num(int scan_num) {
+		this.scan_num = scan_num;
+	}
+
+	public int getReply_num() {
+		return reply_num;
+	}
+
+	public void setReply_num(int reply_num) {
+		this.reply_num = reply_num;
+	}
+
+	public Set<Image> getImages() {
+		return images;
+	}
+
+	public void setImages(Set<Image> images) {
+		this.images = images;
+	}
+
+	public Set<UserFav> getFaveds() {
+		return faveds;
+	}
+
+	public void setFaveds(Set<UserFav> faveds) {
+		this.faveds = faveds;
+	}
+
+	public Set<Reply> getReplys() {
+		return replys;
+	}
+
+	public void setReplys(Set<Reply> replys) {
+		this.replys = replys;
+	}
+
+
+	public Set<MessageLabel> getLabels() {
+		return labels;
+	}
+
+	public void setLabels(Set<MessageLabel> labels) {
+		this.labels = labels;
+	}
 	
-	public MessageTitle getMessageTitle() {
-		return messageTitle;
+	public String getSrc(){
+		content = HtmlUtils.htmlUnescape(content);
+		List<String> list = RichTextProcessor.getImgSrc(content);
+		if(list!=null&&list.size()!=0){
+			return list.get(0);
+		}
+		return "";
 	}
-
-	public void setMessageTitle(MessageTitle messageTitle) {
-		this.messageTitle = messageTitle;
+	
+	public String getHtml(){
+		return RichTextProcessor.getHtml(content);
 	}
-
-	public Copy getCopy() {
-		return copy;
+	
+	@Override
+	public String toString() {
+		return "Message [m_id=" + m_id + ", user=" + user.getNickname() + ", title=" + title + ", content=" + content + ", time=" + time + ", type=" + type
+				+ ", scan_num=" + scan_num + ", reply_num=" + reply_num + ", faveds=" + faveds.size() + ", images=" + images.size()
+				+ ", replys=" + replys.size() + ", labels=" + labels.size() + "]";
 	}
-
-	public void setCopy(Copy copy) {
-		this.copy = copy;
-	}
-
-	public Message() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	
+	
 	
 }

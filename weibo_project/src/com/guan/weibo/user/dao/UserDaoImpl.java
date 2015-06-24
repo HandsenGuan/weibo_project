@@ -2,6 +2,8 @@ package com.guan.weibo.user.dao;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -10,7 +12,7 @@ import org.hibernate.Transaction;
 import com.guan.weibo.user.domain.User;
 
 public class UserDaoImpl implements UserDao {
-
+	
 	private SessionFactory sessionFactory;
 
 	public SessionFactory getSessionFactory() {
@@ -34,6 +36,7 @@ public class UserDaoImpl implements UserDao {
 			tx = session.beginTransaction();
 			session.save(user);
 			tx.commit(); // 提交
+			session.close();
 		} catch (Exception e) {
 			tx.rollback(); // 出现异常回滚
 		}
@@ -44,9 +47,217 @@ public class UserDaoImpl implements UserDao {
 	 */
 	@Override
 	public void deleteById(String id) {
+		
+	}
+	
+	/**
+	 * 修改用户信息
+	 * 
+	 * @param user
+	 */
+	@Override
+	public void updateUser(User user) {
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			session.update(user);
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	
+	/**
+	 * 修改密码
+	 */
+	@Override
+	public void updatePassword(String uid, String password) {
+		
+		String hsql = "update user set password=:password where u_id=:uid";
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("password", password);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
 
 	}
+	
+	
+	/**
+	 * 修改用户状态
+	 */
+	@Override
+	public void updateStatus(String uid, boolean status) {
 
+		String hsql = "update user set status=:status where u_id=:uid";
+	
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("status", status);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	/**
+	 * 修改邮箱
+	 */
+	@Override
+	public void updateEmail(String uid, String email) {
+		
+		String hsql = "update user set email=:email where u_id=:uid";
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("email", email);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	/**
+	 * 修改头像
+	 */
+	@Override
+	public void updateUserImg(String uid, String img_url) {
+		
+		String hsql = "update user set user_img=:img_url where u_id=:uid";
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("img_url", img_url);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	/**
+	 * 修改发布消息数
+	 */
+	@Override
+	public void updateUserMessageNum(String uid,boolean isAdd){
+		String hsql;
+		if(isAdd){
+			hsql = "update user set message_num=message_num+1 where u_id=:uid";
+		}else{
+			hsql = "update user set message_num=message_num-1 where u_id=:uid";
+		}
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	/**
+	 * 修改关注数
+	 */
+	@Override
+	public void updateUserFollowNum(String uid,boolean isAdd){
+		String hsql;
+		if(isAdd){
+			hsql = "update user set follow_num=follow_num+1 where u_id=:uid";
+		}else{
+			hsql = "update user set follow_num=follow_num-1 where u_id=:uid";
+		}
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
+	/**
+	 * 修改被关注数
+	 */
+	@Override
+	public void updateUserFollowedNum(String uid,boolean isAdd){
+		String hsql;
+		if(isAdd){
+			hsql = "update user set followed_num=followed_num+1 where u_id=:uid";
+		}else{
+			hsql = "update user set followed_num=followed_num-1 where u_id=:uid";
+		}
+		
+		Session session = null; // 定义Session
+		Transaction tx = null; // 定义事务
+		try {
+			session = sessionFactory.openSession();
+			tx = session.beginTransaction();
+			Query query = session.createQuery(hsql);
+			query.setParameter("uid", uid);
+			query.executeUpdate();
+			tx.commit(); // 提交
+			session.close();
+		} catch (Exception e) {
+			tx.rollback(); // 出现异常回滚
+		}
+		
+	}
+	
 	/**
 	 * 查找所有
 	 */
@@ -58,7 +269,7 @@ public class UserDaoImpl implements UserDao {
 
 		@SuppressWarnings("unchecked")
 		List<User> user_list = query.list();
-
+		session.close();
 		return user_list;
 	}
 
@@ -68,12 +279,13 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User queryByLoginnameAndLoginpass(String loginname, String loginpass) {
 
-		String hsql = "from user where user_nickname=:loginname and user_password=:loginpass";
+		String hsql = "from user where nickname=:loginname and password=:loginpass";
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery(hsql);
 		query.setParameter("loginname", loginname);
 		query.setParameter("loginpass", loginpass);
 		User user = (User) query.uniqueResult();
+		session.close();
 		return user;
 	}
 	
@@ -82,12 +294,14 @@ public class UserDaoImpl implements UserDao {
 	 */
 	@Override
 	public boolean queryByUidAndPassword(String uid, String password) {
-		String hsql = "select count(*) from user where user_id=:uid and user_password=:password";
+		String hsql = "select count(*) from user where u_id=:uid and password=:password";
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery(hsql);
 		query.setParameter("uid", uid);
 		query.setParameter("password", password);
-		return (int) query.uniqueResult() > 1?true:false;
+		long i = (long)query.uniqueResult();
+		session.close();
+		return  i==1?true:false;
 	}
 
 	
@@ -96,25 +310,43 @@ public class UserDaoImpl implements UserDao {
 	 */
 	@Override
 	public User queryByUid(String uid) {
-		String hsql = "from user where user_id=:uid";
+		String hsql = "from user where u_id=:uid";
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery(hsql);
 		query.setParameter("uid", uid);
 		User user = (User) query.uniqueResult();
+		session.close();
 		return user;
 	}
+	
+	
+	/**
+	 * 通过激活码查找用户
+	 */
+	@Override
+	public User queryByActivationCode(String code){
+		String hsql = "from user where activationCode=:code";
+		Session session = sessionFactory.openSession();
+		Query query = session.createQuery(hsql);
+		query.setParameter("code", code);
+		User user = (User) query.uniqueResult();
+		session.close();
+		return user;
+	}
+	
 
 	/**
 	 * 检验用户名是否注册
 	 */
 	public boolean ajaxValidateLoginname(String loginname) {
 
-		String hsql = "select count(*) from user where user_nickname=:loginname";
+		String hsql = "select count(*) from user where nickname=:loginname";
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery(hsql);
 		query.setParameter("loginname", loginname);
-
-		return (int) query.uniqueResult() == 1;
+		long i =  (long) query.uniqueResult();
+		session.close();
+		return i == 1;
 	}
 
 	
@@ -125,62 +357,31 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public boolean ajaxValidateEmail(String email) {
 
-		String hsql = "select count(*) from user where user_email=:email";
+		String hsql = "select count(*) from user where email=:email";
 		Session session = sessionFactory.openSession();
 		Query query = session.createQuery(hsql);
 		query.setParameter("email", email);
-
-		return (int) query.uniqueResult() == 1;
+		long i = (long) query.uniqueResult();
+		session.close();
+		return  i == 1;
 	}
-
-	/**
-	 * 修改用户状态
-	 */
-	@Override
-	public void updateStatus(String uid, boolean status) {
-
-		String hsql = "update user set user_status=:status where user_id=:uid";
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		Query query = session.createQuery(hsql);
-		query.setParameter(0, status);
-		query.setParameter(1, uid);
-		query.executeUpdate();
-		tx.commit();
-
-	}
-
-	/**
-	 * 修改密码
-	 */
-	@Override
-	public void updatePassword(String uid, String password) {
-		
-		String hsql = "update user set user_password=:password where user_id=:uid";
-		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		Query query = session.createQuery(hsql);
-		query.setParameter(0, password);
-		query.setParameter(1, uid);
-		query.executeUpdate();
-		tx.commit();
-
-	}
-
 	
-
 	/**
-	 * 修改用户信息
-	 * 
-	 * @param user
+	 * 校验password是否正确
 	 */
-
 	@Override
-	public void updateUser(User user) {
+	public boolean ajaxValidatePassword(String u_id,String password) {
+		
+		String hsql = "select count(*) from user where password=:password and u_id=:u_id";
 		Session session = sessionFactory.openSession();
-		Transaction tx = session.beginTransaction();
-		session.update(user);
-		tx.commit();
+		Query query = session.createQuery(hsql);
+		query.setParameter("password", password);
+		query.setParameter("u_id", u_id);
+		long i = (long) query.uniqueResult();
+		session.close();
+		return  i == 1;
 	}
+
+		
 
 }

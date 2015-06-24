@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
+encoding//WebRoot/index.jsp=UTF-8
 encoding//WebRoot/jsps/demo.jsp=UTF-8
 encoding//WebRoot/jsps/one.jsp=UTF-8
 encoding//WebRoot/jsps/uploadFile.jsp=UTF-8
+encoding//WebRoot/jsps/user/load.jsp=UTF-8
+encoding//WebRoot/jsps/vsiteParser.jsp=UTF-8
 encoding/<project>=UTF-8

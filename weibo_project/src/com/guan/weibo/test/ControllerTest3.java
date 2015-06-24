@@ -29,7 +29,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 测试富文本编辑器
+ * 测试文件上传
  * @author guan
  *
  */
@@ -48,7 +48,6 @@ public class ControllerTest3{
         String realPath = null;  
         
         //保存路径 
-        //String savePath = "E:/";  
         String savePath = request.getServletContext().getRealPath("/") + configPath;  
         System.out.println("savepath:"+savePath);
         // 缓存路径   
@@ -68,7 +67,6 @@ public class ControllerTest3{
 			out.flush();  
 	        out.close(); 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} 
         
@@ -83,16 +81,16 @@ public class ControllerTest3{
 	 * @return
 	 */
 	//配置路径
-    protected String configPath = "upload/widget";  
+    protected String configPath = "upload/images";  
   
-    protected String dirTemp = "upload/widget/temp";  
+    protected String dirTemp = "upload/images/temp";  
       
     protected String dirName = "file";  
     
 	public String uploadFiles(HttpServletRequest request,String savePath,String tempPath){
 		String result = null;
           
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");  
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");  
         String ymd = sdf.format(new Date());  
         savePath += "/" + ymd + "/";  
         //新建文件目录
@@ -163,7 +161,6 @@ public class ControllerTest3{
             }   
               
         } catch (FileUploadException e) {  
-            // TODO Auto-generated catch block  
             e.printStackTrace();  
         }  
 		return result;

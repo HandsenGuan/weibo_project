@@ -66,19 +66,21 @@
 	
 	
 	<!--访问到站点的静态资源  -->
-	<!-- <mvc:resources mapping="/javascript/**"   location="/static_resource/javascript/"/>     
-    <mvc:resources mapping="/styles/**"    location="/static_resource/css/"/>     
-    <mvc:resources mapping="/images/**"    location="/static_resource/images/"/>     --> 
+
     <mvc:resources mapping="/wysiwyg/**"    location="/static_resource/wysiwyg/bootstrap-wysiwyg/"/>  
     <mvc:resources mapping="/ckeditor/**"   location="/static_resource/ckeditor_source/"/>
     <mvc:resources mapping="/iquery/**"   location="/static_resource/iquery_uploadfile/"/>
-     <mvc:resources mapping="/vsiteparser/**"    location="/static_resource/VSiteParser/"/> 
+     <mvc:resources mapping="/vsiteparser/**"    location="/static_resource/VSiteParser/"/>
+     <mvc:resources mapping="/bootstrap/**"    location="/jsps/bootstrap/"/>
+     <mvc:resources mapping="/myjs/**"    location="/jsps/js/"/>
+     <mvc:resources mapping="/image/**" location="/jsps/image/"/>
+     <mvc:resources mapping="/message_imgs/**" location="/upload/images/"/>
 	<!-- 定义视图解析器 -->
 	<!-- 配置内部路径解析 -->
 	<bean id="interalResourceViewResolver"
 		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
 		<!-- 先执行order=1的再执行order=2的 -->
-		<property name="order" value="2" />
+		<property name="order" value="1" />
 		<property name="prefix" value="/jsps/" />
 		<property name="suffix" value=".jsp" />
 	</bean>
