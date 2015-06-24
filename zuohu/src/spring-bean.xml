@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        ">
+
+
+	<!-- 配置用户信息表及service类 -->
+	<bean id="userDao" class="com.guan.weibo.user.dao.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="userService" class="com.guan.weibo.user.service.UserService">
+		<property name="userDao" ref="userDao"></property>
+	</bean>
+
+	<!-- 配置group类及service类 -->
+	<bean id="groupDao" class="com.guan.weibo.user.dao.GroupDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="groupService" class="com.guan.weibo.user.service.GroupService">
+		<property name="groupDao" ref="groupDao"></property>
+	</bean>
+
+	<!-- 配置group_user类及service类 -->
+	<bean id="groupUserDao" class="com.guan.weibo.user.dao.GroupUserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="groupUserService" class="com.guan.weibo.user.service.GroupUserService">
+		<property name="groupUserDao" ref="groupUserDao"></property>
+	</bean>
+	
+	<!-- 配置user_fav类及service类 -->
+	<bean id="userFavDao" class="com.guan.weibo.user.dao.UserFavDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="userFavService" class="com.guan.weibo.user.service.UserFavService">
+		<property name="userFavDao" ref="userFavDao"></property>
+	</bean>
+	
+	<!-- 配置user_follow类及service类 -->
+	<bean id="userFollowDao" class="com.guan.weibo.user.dao.UserFollowDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="userFollowService" class="com.guan.weibo.user.service.UserFollowService">
+		<property name="userFollowDao" ref="userFollowDao"></property>
+	</bean>
+
+	<!-- 配置message类及service类 -->
+	<bean id="messageDao" class="com.guan.weibo.message.dao.MessageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+		<property name="userFollowService" ref="userFollowService"></property>
+	</bean>
+
+	<bean id="messageService" class="com.guan.weibo.message.service.MessageService">
+		<property name="messageDao" ref="messageDao"></property>
+	</bean>
+	
+	<!-- 配置image类及service类 -->
+	<bean id="imageDao" class="com.guan.weibo.message.dao.ImageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="imageService" class="com.guan.weibo.message.service.ImageService">
+		<property name="imageDao" ref="imageDao"></property>
+	</bean>
+	
+	<!-- 配置primessage类及service类 -->
+	<bean id="primessageDao" class="com.guan.weibo.message.dao.PrimessageDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="primessageService" class="com.guan.weibo.message.service.PrimessageService">
+		<property name="primessageDao" ref="primessageDao"></property>
+	</bean>
+	
+	<!-- 配置label类及service类 -->
+	<bean id="labelDao" class="com.guan.weibo.message.dao.LabelDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="labelService" class="com.guan.weibo.message.service.LabelService">
+		<property name="labelDao" ref="labelDao"></property>
+	</bean>
+	
+	<!-- 配置messagelabel类及service类 -->
+	<bean id="messageLabelDao" class="com.guan.weibo.message.dao.MessageLabelDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="messageLabelService" class="com.guan.weibo.message.service.MessageLabelService">
+		<property name="messageLabelDao" ref="messageLabelDao"></property>
+	</bean>
+	
+	<!-- 配置reply类及service类 -->
+	<bean id="replyDao" class="com.guan.weibo.message.dao.ReplyDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+
+	<bean id="replyService" class="com.guan.weibo.message.service.ReplyService">
+		<property name="replyDao" ref="replyDao"></property>
+	</bean>
+
+
+</beans>

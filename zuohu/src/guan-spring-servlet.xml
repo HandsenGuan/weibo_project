@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans     
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+        ">
+
+	<!-- 启动自动扫描该包下所有的Bean(例如@Controller) -->
+	<context:component-scan base-package="com.guan.weibo" />
+	
+	<mvc:annotation-driven />
+	
+	
+<!-- 返回json 方法二 需要导入 jackson-annotations.jar,jackson-core.jar,jackson-databind.jar-->  
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" />
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="messageConverters">
+            <list>
+                <bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+                <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                    <property name="supportedMediaTypes">
+                        <list>
+                            <value>text/html; charset=UTF-8</value>
+                            <value>application/json;charset=UTF-8</value>
+                        </list>
+                    </property>
+                </bean>
+            </list>
+        </property>
+    </bean>
+ 
+	
+	 <!-- SpringMVC上传文件时，需要配置MultipartResolver处理器 -->  
+    <!-- <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">  
+        <property name="defaultEncoding" value="UTF-8"/>  
+        指定所上传文件的总大小不能超过4000KB。注意maxUploadSize属性的限制不是针对单个文件，而是所有文件的容量之和  
+        <property name="maxUploadSize" value="4000000"/>  
+    </bean>   -->
+    
+    <!-- SpringMVC在超出上传文件限制时，会抛出org.springframework.web.multipart.MaxUploadSizeExceededException -->  
+    <!-- 该异常是SpringMVC在检查上传的文件信息时抛出来的，而且此时还没有进入到Controller方法中 -->  
+  <!--   <bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">  
+        <property name="exceptionMappings">  
+            <props>  
+                遇到MaxUploadSizeExceededException异常时，自动跳转到/WEB-INF/jsp/error_fileupload.jsp页面  
+                <prop key="org.springframework.web.multipart.MaxUploadSizeExceededException">error_fileupload</prop>  
+            </props>  
+        </property>  
+    </bean>  --> 
+	
+	
+	<!--访问到站点的静态资源  -->
+
+    <mvc:resources mapping="/wysiwyg/**"    location="/static_resource/wysiwyg/bootstrap-wysiwyg/"/>  
+    <mvc:resources mapping="/ckeditor/**"   location="/static_resource/ckeditor_source/"/>
+    <mvc:resources mapping="/iquery/**"   location="/static_resource/iquery_uploadfile/"/>
+     <mvc:resources mapping="/vsiteparser/**"    location="/static_resource/VSiteParser/"/>
+     <mvc:resources mapping="/bootstrap/**"    location="/jsps/bootstrap/"/>
+     <mvc:resources mapping="/myjs/**"    location="/jsps/js/"/>
+     <mvc:resources mapping="/image/**" location="/jsps/image/"/>
+     <mvc:resources mapping="/message_imgs/**" location="/upload/images/"/>
+	<!-- 定义视图解析器 -->
+	<!-- 配置内部路径解析 -->
+	<bean id="interalResourceViewResolver"
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<!-- 先执行order=1的再执行order=2的 -->
+		<property name="order" value="1" />
+		<property name="prefix" value="/jsps/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+
+	<!-- 配置外部资源 -->
+	<!-- <bean id="resourceBundleViewResolver"
+		class="org.springframework.web.servlet.view.ResourceBundleViewResolver">
+		<property name="order" value="1"></property>
+		<property name="basenames">
+			<list>
+				<value>views</value>
+			</list>
+		</property>
+		<property name="defaultParentView" value="default" />
+	</bean> -->
+
+	<!-- 配置路径解析 -->
+	<!-- <bean id="beanNameUrlHandlerMapping"
+		class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping">
+		<property name="order" value="1"></property>
+	</bean>
+ -->
+
+	<!-- 配置参数方法名解析 -->
+	<!-- <bean id="parameterMethodNameResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="defaultMethodName" value="execute" />
+		<property name="paramName" value="cmd" />
+	</bean>
+ -->
+
+	
+	
+
+</beans>

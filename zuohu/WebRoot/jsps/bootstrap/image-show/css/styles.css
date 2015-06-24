@@ -1,0 +1,45 @@
+
+/*----------------------------
+	Thumbnails
+-----------------------------*/
+
+/*img-gather*/
+.img-gather{margin-top:8px; height:200px;}
+.img-gather a{float:left; width:480px; height:480px; }
+
+#thumbs{
+	width:480px;
+	margin:auto /*auto 35px*/;
+	text-align:center;
+}
+
+#thumbs a{
+	border-radius:4px;
+	margin-bottom:10px;
+	background-position:center center;
+	background-repeat: no-repeat;
+	
+	background-size:cover;
+	-moz-background-size:cover;
+	-webkit-background-size:cover;
+}
+
+/*----------------------------
+	Media Queries
+-----------------------------*/
+
+
+@media screen and (max-width: 960px) {
+	#thumbs{
+		width:auto;
+	}
+	
+	#bsaHolder{
+		display:none;
+	}
+}
+
+
+
+
+
